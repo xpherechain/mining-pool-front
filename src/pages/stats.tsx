@@ -99,7 +99,7 @@ const StatsPage = () => {
           <p>{error.message}</p>
         ) : (
           <>
-            <ChartContainer>
+            {/* <ChartContainer>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={poolStats}
@@ -133,7 +133,7 @@ const StatsPage = () => {
                   />
                 </LineChart>
               </ResponsiveContainer>
-            </ChartContainer>
+            </ChartContainer> */}
             
             <h2>Statistics by Time</h2>
             <StatsTable>
