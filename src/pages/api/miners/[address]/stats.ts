@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 
 const getApiBaseUrl = (host: string | undefined) => {
+  console.log(host);
+
   if (host === process.env.TESTNET_DOMAIN) {
     return process.env.TESTNET_POOL_API_BASE_URL;
   }
