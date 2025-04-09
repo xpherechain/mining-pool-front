@@ -41,7 +41,7 @@ const Value = styled.span`
 
 const HomePage = () => {
   const [poolStats, setPoolStats] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const formatHashrate = (hashrate: number) => {
@@ -64,14 +64,14 @@ const HomePage = () => {
   useEffect(() => {
     const fetchPoolStats = async () => {
       try {
-        setLoading(true);
+        // setLoading(true);
         const response = await getPoolStats(""); // Next.js API 라우트 호출
         setPoolStats(response.stats);
       } catch (err) {
         console.error('Failed to fetch pool stats', err);
         setError('Failed to fetch data.');
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 
