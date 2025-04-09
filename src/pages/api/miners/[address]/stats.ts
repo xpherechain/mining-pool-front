@@ -1,9 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 
-const API_BASE_URL = process.env.POOL_API_BASE_URL;
+const getApiBaseUrl = (host: string | undefined) => {
+  if (host === process.env.TESTNET_DOMAIN) {
+    return process.env.TESTNET_POOL_API_BASE_URL;
+  }
+  return process.env.POOL_API_BASE_URL;
+};
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const API_BASE_URL = getApiBaseUrl(req.headers.host);
   const { address } = req.query;
 
   try {
