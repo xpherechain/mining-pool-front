@@ -65,7 +65,7 @@ const HomePage = () => {
     const fetchPoolStats = async () => {
       try {
         setLoading(true);
-        const response = await getPoolStats(); // Next.js API 라우트 호출
+        const response = await getPoolStats(""); // Next.js API 라우트 호출
         setPoolStats(response.stats);
       } catch (err) {
         console.error('Failed to fetch pool stats', err);
