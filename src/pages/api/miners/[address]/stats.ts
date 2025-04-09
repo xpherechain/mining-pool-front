@@ -5,7 +5,7 @@ const getApiBaseUrl = (host: string | undefined) => {
   if (host === process.env.TESTNET_DOMAIN) {
     return process.env.TESTNET_POOL_API_BASE_URL;
   }
-  return process.env.POOL_API_BASE_URL;
+  return process.env.MAINNET_POOL_API_BASE_URL;
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
