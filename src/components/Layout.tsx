@@ -70,9 +70,9 @@ const Layout = ({ children, title = 'Mining Pool' }: LayoutProps) => {
             <Link href="/getting-started" legacyBehavior passHref>
               <NavLink>Getting Start</NavLink>
             </Link>
-            <Link href="/downloads" legacyBehavior passHref>
+            {/* <Link href="/downloads" legacyBehavior passHref>
               <NavLink>Download</NavLink>
-            </Link>
+            </Link> */}
             <Link href="/search" legacyBehavior passHref>
               <NavLink>Search</NavLink>
             </Link>
