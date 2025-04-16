@@ -163,6 +163,23 @@ const SearchPage = ({ initialQuery, initialResults, initialError }: SearchPagePr
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(initialError);
 
+  const formatHashrate = (hashrate: number) => {
+    const units = ['H/s', 'kH/s', 'MH/s', 'GH/s', 'TH/s', 'PH/s'];
+    let unitIndex = 0;
+    let value = hashrate;
+
+    while (value >= 1000 && unitIndex < units.length - 1) {
+      value /= 1000;
+      unitIndex++;
+    }
+
+    return `${value.toFixed(1)} ${units[unitIndex]}`;
+  };
+
+  const formatNumber = (value: number) => {
+    return new Intl.NumberFormat('ko-KR').format(value);
+  };
+
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -218,33 +235,58 @@ const SearchPage = ({ initialQuery, initialResults, initialError }: SearchPagePr
             <ResultCard>
               <ResultTitle>Wallet Information</ResultTitle>
               <p><strong>Address:</strong> {results.miner.address}</p>
+              {results.miner.name && <p><strong>Name:</strong> {results.miner.name}</p>}
               
               <StatsGrid>
                 <StatItem>
                   <StatLabel>Confirmed Balance</StatLabel>
-                  <StatValue>{results.balance.confirmed}</StatValue>
+                  <StatValue>{results.balance.confirmed} XP</StatValue>
                 </StatItem>
                 <StatItem>
                   <StatLabel>Pending Balance</StatLabel>
-                  <StatValue>{results.balance.pending}</StatValue>
+                  <StatValue>{results.balance.pending} XP</StatValue>
                 </StatItem>
                 <StatItem>
                   <StatLabel>Current Hashrate</StatLabel>
-                  <StatValue>{results.stats.hashrate}</StatValue>
+                  <StatValue>{formatHashrate(results.stats.hashrate)}</StatValue>
                 </StatItem>
                 <StatItem>
-                  <StatLabel>Valid Shares</StatLabel>
-                  <StatValue>{results.stats.validShares}</StatValue>
+                  <StatLabel>Total Valid Shares</StatLabel>
+                  <StatValue>{formatNumber(results.stats.totalValidShares)}</StatValue>
                 </StatItem>
                 <StatItem>
-                  <StatLabel>Invalid Shares</StatLabel>
-                  <StatValue>{results.stats.invalidShares}</StatValue>
+                  <StatLabel>Total Invalid Shares</StatLabel>
+                  <StatValue>{formatNumber(results.stats.totalInvalidShares)}</StatValue>
                 </StatItem>
                 <StatItem>
-                  <StatLabel>Blocks Found</StatLabel>
-                  <StatValue>{results.stats.blocksFound}</StatValue>
+                  <StatLabel>Active Workers</StatLabel>
+                  <StatValue>{formatNumber(results.stats.workers.length)}</StatValue>
                 </StatItem>
               </StatsGrid>
+            </ResultCard>
+
+            <ResultCard>
+              <ResultTitle>Worker Details</ResultTitle>
+              <WorkersTable>
+                <thead>
+                  <tr>
+                    <TableHeader>Worker Name</TableHeader>
+                    <TableHeader>Hashrate</TableHeader>
+                    <TableHeader>Valid Shares</TableHeader>
+                    <TableHeader>Invalid Shares</TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {results.stats.workers.map((worker: any) => (
+                    <tr key={worker.name}>
+                      <TableCell>{worker.name}</TableCell>
+                      <TableCell>{formatHashrate(worker.hashrate)}</TableCell>
+                      <TableCell>{formatNumber(worker.validShares)}</TableCell>
+                      <TableCell>{formatNumber(worker.invalidShares)}</TableCell>
+                    </tr>
+                  ))}
+                </tbody>
+              </WorkersTable>
             </ResultCard>
           </>
         )}

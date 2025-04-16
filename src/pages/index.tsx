@@ -17,6 +17,14 @@ const Card = styled.div`
   padding: 1.5rem;
 `;
 
+const FullWidthCard = styled.div`
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  grid-column: 1 / -1;
+`;
+
 const CardTitle = styled.h2`
   margin-top: 0;
   color: #333;
@@ -86,45 +94,84 @@ const HomePage = () => {
       <h1>X-Phere Mining Pool</h1>
       <p>Welcome to pool.x-phere.com</p>
       
-      {poolStats && (
-        <StatusGrid>
-          <Card>
-            <CardTitle>Pool Status</CardTitle>
-            <StatusItem>
-              <Label>Hashrate:</Label>
-              <Value>{formatHashrate(poolStats.hashrate)}</Value>
-            </StatusItem>
-            <StatusItem>
-              <Label>Number of Miners:</Label>
-              <Value>{formatNumber(poolStats.miners)}</Value>
-            </StatusItem>
-            <StatusItem>
-              <Label>Number of Workers:</Label>
-              <Value>{formatNumber(poolStats.workers)}</Value>
-            </StatusItem>
-          </Card>
-          
-          <Card>
-            <CardTitle>Network Information</CardTitle>
-            <StatusItem>
-              <Label>Block Height:</Label>
-              <Value>{poolStats.blockHeight}</Value>
-            </StatusItem>
-            <StatusItem>
-              <Label>Network Difficulty:</Label>
-              <Value>{poolStats.networkDifficulty} T</Value>
-            </StatusItem>
-          </Card>
-          
-          <Card>
-            <CardTitle>Block Information</CardTitle>
-            <StatusItem>
-              <Label>Last Block Found:</Label>
-              <Value>{poolStats.lastBlockFound}</Value>
-            </StatusItem>
-          </Card>
-        </StatusGrid>
-      )}
+      <StatusGrid>
+        <FullWidthCard>
+          <CardTitle>Pool Information</CardTitle>
+          <StatusItem>
+            <Label>Testnet Stratum URL:</Label>
+            <Value>testnet-stratum.x-phere.com:33333</Value>
+          </StatusItem>
+          <StatusItem>
+            <Label>Mainnet Stratum URL:</Label>
+            <Value>stratum-sgp.x-phere.com:33333</Value>
+          </StatusItem>
+        </FullWidthCard>
+
+        <Card>
+          <CardTitle>Pool Status</CardTitle>
+          <StatusItem>
+            <Label>Hashrate:</Label>
+            <Value>{poolStats ? formatHashrate(poolStats.hashrate) : '0 H/s'}</Value>
+          </StatusItem>
+          <StatusItem>
+            <Label>Hash Power Share:</Label>
+            <Value>
+              {poolStats 
+                ? `${((poolStats.hashrate / poolStats.difficulty * 60) * 100).toFixed(2)}%` 
+                : '0%'}
+            </Value>
+          </StatusItem>
+          <StatusItem>
+            <Label>Pool Fee:</Label>
+            <Value>1%</Value>
+          </StatusItem>
+          <StatusItem>
+            <Label>Number of Miners:</Label>
+            <Value>{poolStats ? formatNumber(poolStats.miners) : '0'}</Value>
+          </StatusItem>
+          <StatusItem>
+            <Label>Number of Workers:</Label>
+            <Value>{poolStats ? formatNumber(poolStats.workers) : '0'}</Value>
+          </StatusItem>
+        </Card>
+        
+        <Card>
+          <CardTitle>Network Information</CardTitle>
+          <StatusItem>
+            <Label>Block Height:</Label>
+            <Value>{poolStats ? formatNumber(poolStats.lastBlockHeight) : '0'}</Value>
+          </StatusItem>
+          <StatusItem>
+            <Label>Network Difficulty:</Label>
+            <Value>{poolStats ? `${formatNumber(poolStats.difficulty)}` : '0'}</Value>
+          </StatusItem>
+        </Card>
+        
+        <Card>
+          <CardTitle>Block Information</CardTitle>
+          <StatusItem>
+            <Label>Blocks Found:</Label>
+            <Value>{poolStats ? formatNumber(poolStats.blocksFound) : '0'}</Value>
+          </StatusItem>
+          <StatusItem>
+            <Label>Total Mined:</Label>
+            <Value>{poolStats ? `${formatNumber(poolStats.totalReward)} XP` : '0 XP'}</Value>
+          </StatusItem>
+        </Card>
+
+        <FullWidthCard>
+          <CardTitle>Additional Information</CardTitle>
+          <StatusItem>
+            <Value>Calculated hash power share is an estimated value based on reverse calculation of shares. The actual value may differ.</Value>
+          </StatusItem>
+          <StatusItem>
+            <Value>Miner and worker counts may include duplicates. The actual number of unique connections is higher.</Value>
+          </StatusItem>
+          <StatusItem>
+            <Value>Not all found blocks result in rewards. Pending rewards are calculated every minute and distributed every 5 minutes if the pending amount exceeds 10 XP.</Value>
+          </StatusItem>
+        </FullWidthCard>
+      </StatusGrid>
     </Layout>
   );
 };
