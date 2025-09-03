@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_BASE_URL = '/api'; // Next.js API route
+const API_BASE_URL = "/api"; // Next.js API route
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000,
+  timeout: 60000,
 });
 
 // Fetch miner statistics
@@ -13,7 +13,7 @@ export const getMinerStats = async (address: string) => {
     const response = await api.get(`/miners/${address}/stats`); // Calls `/pages/api/miners/[address]/stats`
     return response.data;
   } catch (error) {
-    console.error('Failed to fetch miner statistics', error);
+    console.error("Failed to fetch miner statistics", error);
     throw error;
   }
 };
@@ -21,10 +21,10 @@ export const getMinerStats = async (address: string) => {
 // Fetch pool statistics
 export const getPoolStats = async (timerange: string) => {
   try {
-    const response = await api.get('/pool/stats'); // Calls `/pages/api/pool/stats`
+    const response = await api.get("/pool/stats"); // Calls `/pages/api/pool/stats`
     return response.data;
   } catch (error) {
-    console.error('Failed to fetch pool statistics', error);
+    console.error("Failed to fetch pool statistics", error);
     throw error;
   }
 };
@@ -32,10 +32,12 @@ export const getPoolStats = async (timerange: string) => {
 // Fetch worker statistics
 export const getWorkerStats = async (address: string, workerName: string) => {
   try {
-    const response = await api.get(`/miners/${address}/workers/${workerName}/stats`); // Calls `/pages/api/miners/[minerAddress]/workers/[workerName]/stats`
+    const response = await api.get(
+      `/miners/${address}/workers/${workerName}/stats`
+    ); // Calls `/pages/api/miners/[minerAddress]/workers/[workerName]/stats`
     return response.data;
   } catch (error) {
-    console.error('Failed to fetch worker statistics', error);
+    console.error("Failed to fetch worker statistics", error);
     throw error;
   }
 };
@@ -43,10 +45,10 @@ export const getWorkerStats = async (address: string, workerName: string) => {
 // Fetch recent rewards
 export const getRecentRewards = async () => {
   try {
-    const response = await api.get('/rewards/recent'); // Calls `/pages/api/rewards/recent`
+    const response = await api.get("/rewards/recent"); // Calls `/pages/api/rewards/recent`
     return response.data;
   } catch (error) {
-    console.error('Failed to fetch recent rewards', error);
+    console.error("Failed to fetch recent rewards", error);
     throw error;
   }
 };
@@ -54,10 +56,10 @@ export const getRecentRewards = async () => {
 // Fetch rewards summary
 export const getRewardsSummary = async () => {
   try {
-    const response = await api.get('/rewards/summary'); // Calls `/pages/api/rewards/summary`
+    const response = await api.get("/rewards/summary"); // Calls `/pages/api/rewards/summary`
     return response.data;
   } catch (error) {
-    console.error('Failed to fetch rewards summary', error);
+    console.error("Failed to fetch rewards summary", error);
     throw error;
   }
 };
@@ -66,15 +68,15 @@ export const getRewardsSummary = async () => {
 export const searchMiner = async (query: string) => {
   try {
     // If the query is an address, fetch miner statistics
-    if (query.startsWith('0x') || query.length > 30) {
+    if (query.startsWith("0x") || query.length > 30) {
       return getMinerStats(query);
     } else {
       // Searching by worker name must be handled by the backend
       // This can be implemented once the backend API is available
-      throw new Error('Searching by worker name is not supported yet');
+      throw new Error("Searching by worker name is not supported yet");
     }
   } catch (error) {
-    console.error('An error occurred during the search', error);
+    console.error("An error occurred during the search", error);
     throw error;
   }
 };
