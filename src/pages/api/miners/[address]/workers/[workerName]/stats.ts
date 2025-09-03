@@ -1,5 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import axios from 'axios';
+import { NextApiRequest, NextApiResponse } from "next";
+import axios from "axios";
+
+export const maxDuration = 60;
 
 const getApiBaseUrl = (host: string | undefined) => {
   console.log(host);
@@ -9,15 +11,23 @@ const getApiBaseUrl = (host: string | undefined) => {
   return process.env.MAINNET_POOL_API_BASE_URL;
 };
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const API_BASE_URL = getApiBaseUrl(req.headers.host);
   const { address, workerName } = req.query;
 
   try {
-    const response = await axios.get(`${API_BASE_URL}/api/miners/${address}/workers/${workerName}/stats`);
+    const response = await axios.get(
+      `${API_BASE_URL}/api/miners/${address}/workers/${workerName}/stats`
+    );
     res.status(200).json(response.data);
   } catch (error) {
-    console.error('워커 통계 API 호출 중 오류:', error);
-    res.status(500).json({ success: false, error: '워커 통계 데이터를 가져오는데 실패했습니다.' });
+    console.error("워커 통계 API 호출 중 오류:", error);
+    res.status(500).json({
+      success: false,
+      error: "워커 통계 데이터를 가져오는데 실패했습니다.",
+    });
   }
 }
