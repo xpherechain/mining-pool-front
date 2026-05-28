@@ -64,20 +64,22 @@ const StatsPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchPoolStats = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await getPoolStats(timeRange);
-        setPoolStats(data.stats);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPoolStats();
+    // Service ended: backend call disabled.
+    // const fetchPoolStats = async () => {
+    //   setLoading(true);
+    //   setError(null);
+    //   try {
+    //     const data = await getPoolStats(timeRange);
+    //     setPoolStats(data.stats);
+    //   } catch (err) {
+    //     setError(err);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+    //
+    // fetchPoolStats();
+    setLoading(false);
   }, [timeRange]);
 
   return (

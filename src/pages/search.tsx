@@ -116,37 +116,38 @@ const RecentSharesCell = styled.td`
   text-align: center;
 `;
 
+// Service ended: server-side data load disabled.
 // 서버에서 초기 데이터 로드 (URL 쿼리 파라미터가 있는 경우)
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
-  const searchQuery = query.address as string;
-  
-  if (searchQuery) {
-    try {
-      const minerData = await getMinerStats(searchQuery);
-      return {
-        props: {
-          initialQuery: searchQuery,
-          initialResults: minerData,
-          initialError: null
-        }
-      };
-    } catch (error) {
-      return {
-        props: {
-          initialQuery: searchQuery,
-          initialResults: null,
-          initialError: 'Failed to fetch data.'
-        }
-      };
-    }
-  }
-  
+  const searchQuery = (query.address as string) || '';
+
+  // try {
+  //   const minerData = await getMinerStats(searchQuery);
+  //   return {
+  //     props: {
+  //       initialQuery: searchQuery,
+  //       initialResults: minerData,
+  //       initialError: null
+  //     }
+  //   };
+  // } catch (error) {
+  //   return {
+  //     props: {
+  //       initialQuery: searchQuery,
+  //       initialResults: null,
+  //       initialError: 'Failed to fetch data.'
+  //     }
+  //   };
+  // }
+
   return {
     props: {
-      initialQuery: '',
+      initialQuery: searchQuery,
       initialResults: null,
-      initialError: null
+      initialError: searchQuery
+        ? 'Service ended. Please use https://xppool.io'
+        : null
     }
   };
 };
@@ -188,26 +189,29 @@ const SearchPage = ({ initialQuery, initialResults, initialError }: SearchPagePr
       return;
     }
     
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const [wallet, worker] = query.split('.');
-      let data;
-      if (worker) {
-        data = await getWorkerStats(wallet, worker); // 워커 상태 가져오기
-        data.type = 'worker';
-      } else {
-        data = await getMinerStats(wallet); // 마이너 상태 가져오기
-        data.type = 'wallet';
-      }
-      setResults(data);
-    } catch (err) {
-      console.error('Error occurred during search', err);
-      setError('An error occurred during the search.');
-    } finally {
-      setLoading(false);
-    }
+    // Service ended: backend call disabled.
+    // setLoading(true);
+    // setError(null);
+    //
+    // try {
+    //   const [wallet, worker] = query.split('.');
+    //   let data;
+    //   if (worker) {
+    //     data = await getWorkerStats(wallet, worker); // 워커 상태 가져오기
+    //     data.type = 'worker';
+    //   } else {
+    //     data = await getMinerStats(wallet); // 마이너 상태 가져오기
+    //     data.type = 'wallet';
+    //   }
+    //   setResults(data);
+    // } catch (err) {
+    //   console.error('Error occurred during search', err);
+    //   setError('An error occurred during the search.');
+    // } finally {
+    //   setLoading(false);
+    // }
+    setResults(null);
+    setError('Service ended. Please use https://xppool.io');
   };
 
   return (

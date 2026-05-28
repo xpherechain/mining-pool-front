@@ -1,27 +1,38 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import axios from "axios";
+// import axios from "axios";
 
 export const maxDuration = 60;
 
-const getApiBaseUrl = (host: string | undefined) => {
-  if (host === process.env.TESTNET_DOMAIN) {
-    return process.env.TESTNET_POOL_API_BASE_URL;
-  }
-  return process.env.MAINNET_POOL_API_BASE_URL;
-};
+// ============================================================================
+// SERVICE ENDED
+// X-Phere Mining Pool has been discontinued. Backend proxy disabled.
+// New mining pool: https://xppool.io
+// ============================================================================
+
+// const getApiBaseUrl = (host: string | undefined) => {
+//   if (host === process.env.TESTNET_DOMAIN) {
+//     return process.env.TESTNET_POOL_API_BASE_URL;
+//   }
+//   return process.env.MAINNET_POOL_API_BASE_URL;
+// };
 
 export default async function handler(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const API_BASE_URL = getApiBaseUrl(req.headers.host);
-  try {
-    const response = await axios.get(`${API_BASE_URL}/api/rewards/summary`);
-    res.status(200).json(response.data);
-  } catch (error) {
-    console.error("Error occurred while calling rewards summary API:", error);
-    res
-      .status(500)
-      .json({ success: false, error: "Failed to fetch rewards summary data." });
-  }
+  // Service ended: backend call disabled.
+  // const API_BASE_URL = getApiBaseUrl(req.headers.host);
+  // try {
+  //   const response = await axios.get(`${API_BASE_URL}/api/rewards/summary`);
+  //   res.status(200).json(response.data);
+  // } catch (error) {
+  //   console.error("Error occurred while calling rewards summary API:", error);
+  //   res
+  //     .status(500)
+  //     .json({ success: false, error: "Failed to fetch rewards summary data." });
+  // }
+  res.status(503).json({
+    success: false,
+    error: "Service ended. Please use https://xppool.io",
+  });
 }
